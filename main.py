@@ -1,108 +1,17 @@
-from AL import AL
+from BFS import BFS
+from DFS import DFS
 from Game import Game
-from Solver import Solver
+from Hill_Climbing import HillClimbing
 from Stone import Stone
-
-from collections import deque
-
-# # Function to copy the game state
-# def copy_game_state(game):
-#     new_game = Game(game.width, game.moves, game.level)
-#     new_game.grid = game.grid
-#     return new_game
-#
-# # DFS Algorithm Function
-# def dfs(game, path=[]):
-#     # Check if the game has won
-#     if game.check_win():
-#         print("You won!")
-#         print("The path from start to finish:")
-#         for step in path:
-#             print(step)
-#         return True
-#
-#     # Check if no moves are left
-#     if game.check_lose():
-#         print("No moves left. You lost the game.")
-#         return False
-#
-#     # Find available magnets
-#     magnets = game.get_all_magnets()
-#     for index, (cell, x, y) in enumerate(magnets):
-#         magnet = cell.contain
-#         if magnet is None:
-#             continue  # Skip if the cell does not contain a magnet
-#
-#         magnet_type = magnet.m_Type  # Access the magnet type
-#         for new_x in range(game.width):
-#             for new_y in range(game.width):
-#                 # Move the magnet to the new position
-#                 if game.move_magnet(magnet, new_x, new_y):
-#                     new_path = path + [f"Move magnet from ({x}, {y}) to ({new_x}, {new_y})"]
-#                     # If the move was successful, continue searching
-#                     if dfs(game, new_path):
-#                         return True
-#                     # Restore the game state if the algorithm doesn't succeed
-#                     game = copy_game_state(game)
-#     return False
-#
-# # BFS Algorithm Function
-# def bfs(game):
-#     # List of possible moves
-#     initial_state = (game.grid, game.moves, game.get_all_magnets())
-#     queue = deque([(initial_state, [])])  # Store current state with the path
-#     seen = set()  # Set to store visited states
-#     seen.add(str(initial_state[0]))  # Add the initial state to seen states
-#
-#     while queue:
-#         (grid, moves, magnets), path = queue.popleft()
-#
-#         # Create a new game instance using the current state
-#         new_game = Game(game.width, moves, game.level)
-#         new_game.grid = grid
-#
-#         # Check if the game has won
-#         if new_game.check_win():
-#             print("You won!")
-#             print("The path from start to finish:")
-#             for step in path:
-#                 print(step)
-#             return True
-#
-#         # Check if no moves are left
-#         if new_game.check_lose():
-#             print("No moves left. You lost the game.")
-#             return False
-#
-#         for index, (cell, x, y) in enumerate(magnets):
-#             magnet = cell.contain
-#             if magnet is None:
-#                 continue  # Skip if the cell does not contain a magnet
-#
-#             magnet_type = magnet.m_Type
-#             for new_x in range(game.width):
-#                 for new_y in range(game.width):
-#                     if new_game.move_magnet(magnet, new_x, new_y):
-#                         new_path = path + [f"Move magnet from ({x}, {y}) to ({new_x}, {new_y})"]
-#                         new_state = (new_game.grid, new_game.moves, new_game.get_all_magnets())
-#                         if str(new_state[0]) not in seen:
-#                             queue.append((new_state, new_path))
-#                             seen.add(str(new_state[0]))  # Add the new state to the seen set
-#
-#     return False
+from A_STAR import AStar
+from UCS import UCS
 
 
 def main():
-    magnet_n = Stone("magnet", "N")
-    magnet_s = Stone("magnet", "S")
+    magnet_n = Stone("N")
+    magnet_s = Stone("S")
     iron = Stone("iron")
-
     #//////////////////////////////////////////////////////////////
-    game0 = Game(2, 2, 0)
-    game0.grid.put_stone(0, 0, magnet_n)
-    # game0.grid.put_stone(1, 2, iron)
-    game0.grid.set_cell_type(1, 1, "gCell")
-    # game1.grid.set_cell_type(1, 3, "gCell")
 
 
     game1 = Game(4, 4, 1)
@@ -110,7 +19,7 @@ def main():
     game1.grid.put_stone(1, 2, iron)
     game1.grid.set_cell_type(1, 1, "gCell")
     game1.grid.set_cell_type(1, 3, "gCell")
-    for col in range(game1.width):
+    for col in range(game1.grid.width):
         game1.grid.set_cell_type(3, col, "bCell")
 
     #//////////////////////////////////////////////////////////////
@@ -191,7 +100,7 @@ def main():
     game6.grid.set_cell_type(0, 3, "gCell")
     game6.grid.set_cell_type(1, 2, "gCell")
     game6.grid.set_cell_type(2, 3, "gCell")
-    for col in range(game6.width):
+    for col in range(game6.grid.width):
         game6.grid.set_cell_type(3, col, "bCell")
         game6.grid.set_cell_type(4, col, "bCell")
     # //////////////////////////////////////////////////////////////
@@ -230,7 +139,7 @@ def main():
     game8.grid.set_cell_type(0, 0, "gCell")
     game8.grid.set_cell_type(0, 2, "gCell")
     game8.grid.set_cell_type(2, 2, "gCell")
-    for col in range(game8.width):
+    for col in range(game8.grid.width):
         game8.grid.set_cell_type(3, col, "bCell")
     # //////////////////////////////////////////////////////////////
     #(0,4) //(0,3)
@@ -243,7 +152,7 @@ def main():
     game9.grid.set_cell_type(0, 1, "gCell")
     game9.grid.set_cell_type(0, 3, "gCell")
     game9.grid.set_cell_type(0, 6, "gCell")
-    for col in range(game9.width):
+    for col in range(game9.grid.width):
         game9.grid.set_cell_type(1, col, "bCell")
         game9.grid.set_cell_type(2, col, "bCell")
         game9.grid.set_cell_type(3, col, "bCell")
@@ -279,7 +188,7 @@ def main():
     game11.grid.set_cell_type(1, 1, "bCell")
     game11.grid.set_cell_type(1, 3, "bCell")
     game11.grid.set_cell_type(1, 4, "bCell")
-    for col in range(game11.width):
+    for col in range(game11.grid.width):
         game11.grid.set_cell_type(2, col, "bCell")
         game11.grid.set_cell_type(3, col, "bCell")
         game11.grid.set_cell_type(4, col, "bCell")
@@ -302,7 +211,7 @@ def main():
     game12.grid.set_cell_type(0, 3, "bCell")
     game12.grid.set_cell_type(1, 2, "bCell")
     game12.grid.set_cell_type(1, 3, "bCell")
-    for col in range(game12.width):
+    for col in range(game12.grid.width):
         game12.grid.set_cell_type(col,4,"bCell")
         game12.grid.set_cell_type(col,4,"bCell")
         game12.grid.set_cell_type(col,4,"bCell")
@@ -328,7 +237,7 @@ def main():
     game13.grid.set_cell_type(2, 4, "bCell")
     game13.grid.set_cell_type(1, 5, "bCell")
     game13.grid.set_cell_type(2, 5, "bCell")
-    for col in range(game13.width):
+    for col in range(game13.grid.width):
         game13.grid.set_cell_type(3, col, "bCell")
         game13.grid.set_cell_type(4, col, "bCell")
         game13.grid.set_cell_type(5, col, "bCell")
@@ -361,10 +270,10 @@ def main():
     game15.grid.set_cell_type(1, 4, "gCell")
     game15.grid.set_cell_type(2, 4, "gCell")
 
-    for col in range(game15.width):
+    for col in range(game15.grid.width):
         game15.grid.set_cell_type(3, col, "bCell")
-    for row in range(4, game15.width):
-        for col in range(game15.width):
+    for row in range(4, game15.grid.width):
+        for col in range(game15.grid.width):
             game15.grid.set_cell_type(row, col, "bCell")
 
     # //////////////////////////////////////////////////////////////
@@ -425,7 +334,7 @@ def main():
     game18.grid.set_cell_type(4, 1, "bCell")
     game18.grid.set_cell_type(4, 4, "bCell")
     game18.grid.set_cell_type(4, 5, "bCell")
-    for col in range(game18.width):
+    for col in range(game18.grid.width):
         game18.grid.set_cell_type(5, col, "bCell")
 
     # //////////////////////////////////////////////////////////////
@@ -470,7 +379,7 @@ def main():
     game20.grid.set_cell_type(2, 0, "gCell")
     game20.grid.set_cell_type(3, 0, "gCell")
 
-    for col in range(game20.width):
+    for col in range(game20.grid.width):
         game20.grid.set_cell_type(col,4,"bCell")
         game20.grid.set_cell_type(col,4,"bCell")
         game20.grid.set_cell_type(col,4,"bCell")
@@ -493,7 +402,7 @@ def main():
     game21.grid.set_cell_type(2, 1, "gCell")
 
 
-    for col in range(game21.width):
+    for col in range(game21.grid.width):
         game21.grid.set_cell_type(3, col, "bCell")
     # //////////////////////////////////////////////////////////////
     # s(3,3)  s(0,1) n(1,0)
@@ -513,7 +422,7 @@ def main():
     game22.grid.set_cell_type(0, 2, "bCell")
     game22.grid.set_cell_type(1, 2,"bCell")
 
-    for col in range(game22.width):
+    for col in range(game22.grid.width):
             game22.grid.set_cell_type(4, col, "bCell")
     # //////////////////////////////////////////////////////////////
     #n(0,4) s(2,2) n(0,2)
@@ -533,7 +442,7 @@ def main():
     # game23.grid.set_cell_type(3, 2, "bCell")
     # game22.grid.set_cell_type(1, 2,"bCell")
 
-    for col in range(game23.width):
+    for col in range(game23.grid.width):
         game23.grid.set_cell_type(4, col, "bCell")
     # //////////////////////////////////////////////////////////////
     #s(3,1) n(2,3) s(4,1)
@@ -570,405 +479,516 @@ def main():
     game25.grid.set_cell_type(4, 1, "gCell")
     game25.grid.set_cell_type(4, 2, "gCell")
 
-    for col in range(game25.width):
+    for col in range(game25.grid.width):
         game25.grid.set_cell_type(col, 4, "bCell")
     # //////////////////////////////////////////////////////////////
 
 
-    # AL.BFS(game20)
-
-    # game1.display_game()
-    # # game1.move_magnet(magnet_n,3,2)
-    # game1.move_magnet(magnet_n,1,1)
-    # game1.display_game()
-    #
-    # game1.move_magnet_dfs(2, 0, 1, 1)
-    # game1.display_game()
-    # //////////////////////////////////////////////////////////////
 
 
-    # solver = Solver(game1)
-    # solver.DFS()
+    game = {
+        '1': game1,
+        '2': game2,
+        '3': game3,
+        '4': game4,
+        '5': game5,
+        '6': game6,
+        '7': game7,
+        '8': game8,
+        '9': game9,
+        '10': game10,
+        '11': game11,
+        '12': game12,
+        '13': game13,
+        '14': game14,
+        '15': game15,
+        '16': game16,
+        '17': game17,
+        '18': game18,
+        '19': game19,
+        '20': game20,
+        '21': game21,
+        '22': game22,
+        '23': game23,
+        '24': game24,
+        '25': game25
+    }
 
-    choice = input("enter the number of level from 1 to 25 :")
+    choice = input("Enter the number of level from 1 to 25: ")
 
-    if choice == '1':
-        print("start level 1")
+    if choice in game:
+        print(f"Start level {choice}")
+
         choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game1.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game1)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
 
-    elif choice == '2':
-        print("start level 2")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
         if choice_1 == '1':
-            game2.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game2)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
+            game[choice].play()
 
-    elif choice == '3':
-        print("start level 3")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game3.play()
         elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game3)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
+            choice_2 = input(
+                "Enter:\n"
+                "1 for BFS\n"
+                "2 for DFS\n"
+                "3 for UCS\n"
+                "4 for Hill Climbing\n"
+                "5 for A*\n"
+                ": "
+            )
 
-    elif choice == '4':
-        print("start level 4")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game4.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game4)
             if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
+                bfs_solver = BFS(game[choice])
+                print("The answer using BFS:")
+                bfs_solver.start()
 
-    elif choice == '5':
-        print("start level 5")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game5.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game5)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
             elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
+                dfs_solver = DFS(game[choice])
+                print("The answer using DFS:")
+                dfs_solver.start()
 
-    elif choice == '6':
-        print("start level 6")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game6.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game6)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
+            elif choice_2 == '3':
+                ucs_solver = UCS(game[choice])
+                print("The answer using UCS:")
+                ucs_solver.start()
 
-    elif choice == '7':
-        print("start level 7")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game7.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game7)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
+            elif choice_2 == '4':
+                hill_climbing_solver = HillClimbing(game[choice])
+                print("The answer using Hill Climbing:")
+                hill_climbing_solver.start()
 
-    elif choice == '8':
-        print("start level 8")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game8.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game8)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
+            elif choice_2 == '5':
+                a_star_solver = AStar(game[choice])
+                print("The answer using A*:")
+                a_star_solver.start()
 
-    elif choice == '9':
-        print("start level 9")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game9.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game9)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '10':
-        print("start level 10")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game10.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game10)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '11':
-        print("start level 11")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game11.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game11)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '12':
-        print("start level 12")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game12.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game12)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '13':
-        print("start level 13")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game13.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game13)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '14':
-        print("start level 14")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game14.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game14)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '15':
-        print("start level 15")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game15.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game15)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '16':
-        print("start level 16")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game16.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game16)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '17':
-        print("start level 17")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game17.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game17)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '18':
-        print("start level 18")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game18.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game18)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '19':
-        print("start level 19")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game19.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game19)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '20':
-        print("start level 20")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game20.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game20)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '21':
-        print("start level 21")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game21.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game21)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '22':
-        print("start level 22")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game22.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game22)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '23':
-        print("start level 23")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game23.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game23)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '24':
-        print("start level 24")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game24.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game24)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
-    elif choice == '25':
-        print("start level 25")
-        choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
-        if choice_1 == '1':
-            game25.play()
-        elif choice_1 == '2':
-            choice_2 = input("enter 1 for BFS and 2 for DFS :")
-            solver = Solver(game25)
-            if choice_2 == '1':
-                print("the answer using BFS :")
-                solver.BFS()
-            elif choice_2 == '2':
-                print("the answer using DFS :")
-                solver.DFS()
-
+            else:
+                print("Invalid choice for solving method.")
     else:
-        print("Wrong input. Please enter a number between 1 and 25.")
+        print("Invalid level choice.")
+
+
+
+
+
+
+
+    # choice = input("enter the number of level from 1 to 25 :")
+    #
+    # if choice == '1':
+    #     print("start level 1")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game1.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for UCS and 4 for Hill Climbing and 5 for A_Star :")
+    #         if choice_2 == '1':
+    #             bfs_solver = BFS(game1)
+    #             print("the answer using BFS :")
+    #             bfs_solver.start()
+    #         elif choice_2 == '2':
+    #             dfs_solver = DFS(game1)
+    #             print("the answer using DFS :")
+    #             dfs_solver.start()
+    #         elif choice_2 == '3':
+    #             ucs_solver = UCS(game1)
+    #             print("the answer using UCS :")
+    #             ucs_solver.start()
+    #         elif choice_2 == '4':
+    #             HillClimbing_solver= HillClimbing(game1)
+    #             print("the answer using Hill Climbing :")
+    #             HillClimbing_solver.start()
+    #         elif choice_2 == '4':
+    #             A_star = AStar(game1)
+    #             print("the answer using A Star :")
+    #             A_star.start()
+
+    #
+    # elif choice == '2':
+    #     print("start level 2")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game2.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game2)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #         elif choice_2 == '3':
+    #             print("the answer using UCS :")
+    #             solver.UCS()
+    #
+    # elif choice == '3':
+    #     print("start level 3")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game3.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game3)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #         elif choice_2 == '3':
+    #             print("the answer using UCS :")
+    #             solver.UCS()
+    #
+    # elif choice == '4':
+    #     print("start level 4")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game4.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game4)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #         elif choice_2 == '3':
+    #             print("the answer using UCS :")
+    #             solver.UCS()
+    #
+    # elif choice == '5':
+    #     print("start level 5")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game5.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game5)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #         elif choice_2 == '3':
+    #             print("the answer using UCS :")
+    #             solver.UCS()
+    #
+    # elif choice == '6':
+    #     print("start level 6")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game6.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game6)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #         elif choice_2 == '3':
+    #             print("the answer using UCS :")
+    #             solver.UCS()
+    # elif choice == '7':
+    #     print("start level 7")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game7.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game7)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #         elif choice_2 == '3':
+    #             print("the answer using UCS :")
+    #             solver.UCS()
+    # elif choice == '8':
+    #     print("start level 8")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game8.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game8)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #         elif choice_2 == '3':
+    #             print("the answer using UCS :")
+    #             solver.UCS()
+    #
+    # elif choice == '9':
+    #     print("start level 9")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game9.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game9)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #         elif choice_2 == '3':
+    #             print("the answer using UCS :")
+    #             solver.UCS()
+    #
+    # elif choice == '10':
+    #     print("start level 10")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game10.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game10)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #         elif choice_2 == '3':
+    #             print("the answer using UCS :")
+    #             solver.UCS()
+    #
+    # elif choice == '11':
+    #     print("start level 11")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game11.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game11)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '12':
+    #     print("start level 12")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game12.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game12)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '13':
+    #     print("start level 13")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game13.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game13)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '14':
+    #     print("start level 14")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game14.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game14)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '15':
+    #     print("start level 15")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game15.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game15)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '16':
+    #     print("start level 16")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game16.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game16)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '17':
+    #     print("start level 17")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game17.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game17)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '18':
+    #     print("start level 18")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game18.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game18)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '19':
+    #     print("start level 19")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game19.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game19)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '20':
+    #     print("start level 20")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game20.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game20)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '21':
+    #     print("start level 21")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game21.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game21)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '22':
+    #     print("start level 22")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game22.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game22)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '23':
+    #     print("start level 23")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game23.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game23)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '24':
+    #     print("start level 24")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game24.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game24)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # elif choice == '25':
+    #     print("start level 25")
+    #     choice_1 = input("Choose the game mode:\n1. Manual Play\n2. Automatic Solve\n")
+    #     if choice_1 == '1':
+    #         game25.play()
+    #     elif choice_1 == '2':
+    #         choice_2 = input("enter 1 for BFS and 2 for DFS and 3 for ucs :")
+    #         solver = Solver(game25)
+    #         if choice_2 == '1':
+    #             print("the answer using BFS :")
+    #             solver.BFS()
+    #         elif choice_2 == '2':
+    #             print("the answer using DFS :")
+    #             solver.DFS()
+    #
+    # else:
+    #     print("Wrong input. Please enter a number between 1 and 25.")
 
 
 if __name__ == "__main__":

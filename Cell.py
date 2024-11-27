@@ -1,28 +1,26 @@
-
 class Cell:
-    def __init__(self, name, empty=True, contain=None):
-        self.name =name
-        self.empty=empty
-        self.contain=contain
+    def __init__(self, cell_type, is_empty=True, contain=None):
+        self.cell_type = cell_type
+        self.is_empty = is_empty
+        self.contain = contain
 
     def is_empty(self):
-        return self.empty
+        return self.is_empty
 
-    def put_stone(self,stone):
-        # if not self.empty:
-        #     print("Cell is already occupied")
-        #     return False
-        self.empty = False
+    def put_stone(self, stone):
+
+        if not self.is_empty:
+            print("Cell is already occupied")
+            return False
+        self.is_empty = False
         self.contain = stone
-        # return True
+        return True
 
     def remove_stone(self):
-        # if self.empty:
-        #     print("cell is already empty")
-        #     return False
+
+        if self.is_empty:
+            print("Cell is already empty")
+            return False
+        self.is_empty = True
         self.contain = None
-        self.empty = True
-        # return True
-
-
-
+        return True
